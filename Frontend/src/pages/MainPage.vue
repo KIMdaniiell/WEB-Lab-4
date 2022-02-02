@@ -1,20 +1,18 @@
 <template>
   <div>
-    <div class="topBlock">
+    <div class="topBlock" >
       <Graph
           style="border: 1px solid red"
           :radius="currentR"
           :dots="dots"
+          @DotSubmit="fetch"
       ></Graph>
       <DotForm
           style="border: 1px solid red"
           @rHasChanged="updateR"
+          @DotSubmit="fetch"
       ></DotForm>
     </div>
-    <DotForm
-        style="border: 1px solid red; display: none"
-    ></DotForm>
-
     <div class="botBlock">
       <ResultTable :dots="dots"></ResultTable>
     </div>
@@ -31,17 +29,30 @@ export default {
   data(){
     return {
       dots: [
-        {x: 1,y: 1,r: 1,result: 1,ctime: 1,ptime: 1},
-        {x: 2,y: 2,r: 2,result: 2,ctime: 2,ptime: 2},
+        {x: 0,y: 1,r: 1,result: "HIT",ctime: 1,ptime: 2},
+        {x: 1,y: 0,r: 1,result: "MISS",ctime: 2,ptime: 2},
+        {x: 0,y: -1,r: 1,result: "HIT",ctime: 3,ptime: 2},
+        {x: -1,y: 0,r: 1,result: "MISS",ctime: 4,ptime: 2},
       ],
-      currentR: '0.5',
+      currentR: null,
+      username: null,
+      password: null,
     }
   },
   methods: {
     updateR(newValue) {
-      this.currentR = newValue;
+      this.currentR = parseFloat(newValue);
+    },
+    fetch(x,y,r) {
+      let requstBody = {
+        'coordinateX': parseFloat(x),
+        'coordinateY': parseFloat(y),
+        'radius': parseFloat(r),
+        'username': this.username,
+        'password': this.password,
+      }
     }
-  }
+  },
 }
 </script>
 
