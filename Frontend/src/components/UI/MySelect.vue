@@ -28,5 +28,8 @@ export default {
 </script>
 
 <style scoped>
-
+select {
+  border: 3px solid black;
+  border-radius: 10px;
+}
 </style>
