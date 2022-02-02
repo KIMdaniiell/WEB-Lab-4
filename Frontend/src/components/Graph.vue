@@ -65,9 +65,9 @@ export default {
       if (this.radius === null) {
         document.getElementById("errorDisplay").innerText = "Выберите радиус!";
       } else {
-        document.getElementById("errorDisplay").innerText = "Ошибок нетОшибок нетОшибок нет";
-        let calculatedX = (event.offsetX-255)/200*this.radius;
-        let calculatedY = -(event.offsetY-255)/200*this.radius;
+        document.getElementById("errorDisplay").innerText = "";
+        let calculatedX = ((event.offsetX-255)/200*this.radius).toFixed(3);
+        let calculatedY = (-(event.offsetY-255)/200*this.radius).toFixed(3);
         this.$emit('DotSubmit',calculatedX,calculatedY,this.radius);
       }
     },

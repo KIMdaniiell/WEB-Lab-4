@@ -15,12 +15,12 @@
       </div>
       <div class="btns">
         <MyButton class="bnt" @click="submitForm" >ОТПРАВИТЬ</MyButton>
-        <MyButton class="bnt" @click="toWelcome" >ОЧИСТИТЬ</MyButton>
+        <MyButton class="bnt" @click="resetForm" >ОЧИСТИТЬ</MyButton>
         <MyButton class="bnt" @click="toWelcome" >В НАЧАЛО</MyButton>
       </div>
     </form>
-    <div class="error" style="border: 1px solid red">
-      <span id="errorDisplay" ref="errorDisplay">Ошибок нетОшибок нетОшибок нет</span>
+    <div class="error">
+      <span id="errorDisplay" ref="errorDisplay"></span>
     </div>
   </div>
 </template>
@@ -58,6 +58,7 @@ export default {
   },
   methods: {
     toWelcome() {
+      this.$emit('logout');
       this.$router.push({name: 'welcome'});
     },
 
@@ -108,13 +109,17 @@ export default {
         let x = parseFloat(this.selectedX);
         let y = parseFloat(this.inputY);
         let r = parseFloat(this.selectedR);
-        this.$emit('DotSubmit',x,y,r);
-        e.innerText = "Ошибок нетОшибок нетОшибок нет";
+        this.$emit('dotSubmit',x,y,r);
+        e.innerText = "";
       } else {
         e.innerText = (!this.validateX() ? 'Введите валидное значение X\n' : '') +
             (!this.validateY() ? 'Введите валидное значение Y\n' : '') +
             (!this.validateR() ? 'Введите валидное значение R\n' : '');
       }
+    },
+
+    resetForm(){
+      this.$emit('dotsReset');
     }
   }
 }

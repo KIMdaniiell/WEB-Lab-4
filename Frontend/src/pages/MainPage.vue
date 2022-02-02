@@ -2,15 +2,15 @@
   <div>
     <div class="topBlock" >
       <Graph
-          style="border: 1px solid red"
           :radius="currentR"
           :dots="dots"
           @DotSubmit="fetch"
       ></Graph>
       <DotForm
-          style="border: 1px solid red"
           @rHasChanged="updateR"
-          @DotSubmit="fetch"
+          @dotSubmit="fetch"
+          @dotsReset="resetDots"
+          @logout="logout"
       ></DotForm>
     </div>
     <div class="botBlock">
@@ -26,6 +26,14 @@ import ResultTable from "../components/ResultTable";
 export default {
   components: {ResultTable, DotForm, Graph },
   name: "MainPage",
+  props: {
+    username: {
+      type: String,
+    },
+    password:{
+      type: String,
+    },
+  },
   data(){
     return {
       dots: [
@@ -35,14 +43,18 @@ export default {
         {x: -1,y: 0,r: 1,result: "MISS",ctime: 4,ptime: 2},
       ],
       currentR: null,
-      username: null,
-      password: null,
+
     }
   },
   methods: {
     updateR(newValue) {
       this.currentR = parseFloat(newValue);
     },
+    logout(){
+      this.$emit('update:username','');
+      this.$emit('update:password','');
+    }
+    ,
     fetch(x,y,r) {
       let requstBody = {
         'coordinateX': parseFloat(x),
@@ -51,6 +63,15 @@ export default {
         'username': this.username,
         'password': this.password,
       }
+      console.log(requstBody);
+    },
+    resetDots(){
+      let requstBody = {
+        'username': this.username,
+        'password': this.password,
+      }
+      console.log(requstBody);
+
     }
   },
 }

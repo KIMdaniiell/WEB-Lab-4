@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <Header></Header>
-    <router-view></router-view>
+    <router-view v-model:username="username" v-model:password="password"></router-view>
   </div>
 </template>
 
@@ -9,7 +9,13 @@
 import Header from "./components/Header";
 export default {
   components: {Header},
-  name: "WelcomePage"
+  name: "App",
+  data() {
+    return {
+      username: '',
+      password: '',
+    }
+  }
 }
 </script>
 
