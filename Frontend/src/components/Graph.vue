@@ -35,7 +35,7 @@ export default {
             ctx.fillStyle = 'lightgreen';
           }
           ctx.beginPath();
-          ctx.arc(255+dot.x*200, 255-dot.y*200, 4, 0, Math.PI * 2, false);
+          ctx.arc((255+dot.x*200/dot.r), (255-dot.y*200/dot.r), 4, 0, Math.PI * 2, false);
           ctx.closePath();
           ctx.fill();
         }
@@ -68,10 +68,34 @@ export default {
         document.getElementById("errorDisplay").innerText = "";
         let calculatedX = ((event.offsetX-255)/200*this.radius).toFixed(3);
         let calculatedY = (-(event.offsetY-255)/200*this.radius).toFixed(3);
-        this.$emit('DotSubmit',calculatedX,calculatedY,this.radius);
+        this.$emit('dotSubmit',calculatedX,calculatedY,this.radius);
       }
     },
-
+    showDots() {
+      let img = this.$refs.curImg;
+      let c = document.getElementById("canvas");
+      let ctx = c.getContext("2d");
+      ctx.clearRect(0, 0, 512, 512);
+      ctx.drawImage(img, 0, 0);
+      Array.from(this.dots).forEach( dot => {
+        if (dot.r === this.radius){
+          if (dot.result === 'HIT'){
+            ctx.fillStyle = 'red';
+          } else {
+            ctx.fillStyle = 'lightgreen';
+          }
+          ctx.beginPath();
+          ctx.arc((255+dot.x*200/dot.r), (255-dot.y*200/dot.r), 4, 0, Math.PI * 2, false);
+          ctx.closePath();
+          ctx.fill();
+        }
+      });
+    },
+  },
+  watch: {
+    dots() {
+      this.showDots();
+    }
   }
 }
 </script>

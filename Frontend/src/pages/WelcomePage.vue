@@ -51,19 +51,28 @@ export default {
       this.dialogVisible=true;
     },
     userFormHandle(login, password) {
-      console.log(`${login}  : ${password}`)
       this.dialogVisible = false
       this.$emit('update:username',login);
       this.$emit('update:password',password);
       let request = {
-        'username': login,
-        'password': password,
+        "username": login,
+        "password": password,
       }
-      console.log( this.entranceMode, request );
+      let url = (this.entranceMode==="registration")?'/api/authentication/signup':'/api/authentication/login';
 
-      if (true){
-        this.toMain();
-      }
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(request),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+          .then((response) => response.json())
+          .then((json) => {
+            if (json.authStatus === "true") {
+              this.toMain();
+            }
+          });
     }
   }
 }

@@ -4,11 +4,11 @@
       <Graph
           :radius="currentR"
           :dots="dots"
-          @DotSubmit="fetch"
+          @dotSubmit="send"
       ></Graph>
       <DotForm
           @rHasChanged="updateR"
-          @dotSubmit="fetch"
+          @dotSubmit="send"
           @dotsReset="resetDots"
           @logout="logout"
       ></DotForm>
@@ -55,7 +55,7 @@ export default {
       this.$emit('update:password','');
     }
     ,
-    fetch(x,y,r) {
+    send(x,y,r) {
       let requstBody = {
         'coordinateX': parseFloat(x),
         'coordinateY': parseFloat(y),
@@ -63,15 +63,45 @@ export default {
         'username': this.username,
         'password': this.password,
       }
-      console.log(requstBody);
+      let url = '/api/points/add';
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(requstBody),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      }).then(response => response.json())
+          .then(data => {
+            if (data.updateStatus === "true"){
+              this.dots = [];
+              data.dots.forEach( ddot => {
+                this.dots.push(
+                    {x: parseFloat(ddot.coordinateX.replace(',','.')),
+                      y: parseFloat(ddot.coordinateY.replace(',','.')),
+                      r: parseFloat(ddot.radius.replace(',','.')),
+                      result: ddot.result,
+                      ctime: ddot.currentTime,
+                      ptime: parseFloat(ddot.processingTime.replace(',','.'))
+                    })
+              });
+            } else {
+            }
+          });
     },
     resetDots(){
       let requstBody = {
         'username': this.username,
         'password': this.password,
       }
-      console.log(requstBody);
-
+      let url = '/api/points/reset';
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(requstBody),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
+      this.dots = [];
     }
   },
 }
