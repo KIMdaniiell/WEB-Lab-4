@@ -1,8 +1,9 @@
 package itmo.web.controller;
 
+import itmo.web.dao.beans.DotTableBean;
 import itmo.web.dao.beans.UserTableBean;
 import itmo.web.dao.entities.UserEntity;
-import itmo.web.model.UserManager;
+import itmo.web.model.UserValidator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,6 +17,8 @@ public class User {
 
     @EJB
     private UserTableBean userTableBean;
+    @EJB
+    private DotTableBean dotTableBean;
 
     @POST
     @Path("/signup")
@@ -28,10 +31,12 @@ public class User {
             String username = jsonObject.getString("username");
             String password = jsonObject.getString("password");
 
-            if (new UserManager().signUp(username,password)) {
+            if (new UserValidator().validateSignUpData(username,password)) {
+
                 UserEntity userEntity = new UserEntity();
                 userEntity.setUsername(username);
                 userEntity.setPassword(password);
+
                 if (userTableBean.register(userEntity)){
 
                     rb.entity(String.format("{\"authStatus\": \"%b\"}", true));
@@ -66,7 +71,7 @@ public class User {
             JSONObject jsonObject = new JSONObject(requestBody);
             String username = jsonObject.getString("username");
             String password = jsonObject.getString("password");
-            if (new UserManager().login(username,password)) {
+            if (new UserValidator().validateLoginData(username,password)) {
 
                 UserEntity userEntity = new UserEntity();
                 userEntity.setUsername(username);
@@ -94,4 +99,5 @@ public class User {
             return rb.build();
         }
     }
+
 }
