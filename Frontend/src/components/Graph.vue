@@ -30,9 +30,9 @@ export default {
       Array.from(self.dots).forEach( dot => {
         if (parseFloat(dot.r+"") === parseFloat(self.radius+"")){
           if (dot.result === 'HIT'){
-            ctx.fillStyle = 'red';
-          } else {
             ctx.fillStyle = 'lightgreen';
+          } else {
+            ctx.fillStyle = 'red';
           }
           ctx.beginPath();
           ctx.arc((255+dot.x*200/dot.r), (255-dot.y*200/dot.r), 4, 0, Math.PI * 2, false);
@@ -80,9 +80,9 @@ export default {
       Array.from(this.dots).forEach( dot => {
         if (dot.r === this.radius){
           if (dot.result === 'HIT'){
-            ctx.fillStyle = 'red';
-          } else {
             ctx.fillStyle = 'lightgreen';
+          } else {
+            ctx.fillStyle = 'red';
           }
           ctx.beginPath();
           ctx.arc((255+dot.x*200/dot.r), (255-dot.y*200/dot.r), 4, 0, Math.PI * 2, false);

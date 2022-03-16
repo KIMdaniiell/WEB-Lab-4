@@ -34,16 +34,41 @@ export default {
       type: String,
     },
   },
+  mounted() {
+    console.log("Main Page is mounted!");
+    let requstBody = {
+      'username': this.username,
+      'password': this.password,
+    }
+    let url = '/api/points/observe';
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(requstBody),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    }).then(response => response.json())
+        .then(data => {
+          if (data.updateStatus === "true"){
+            this.dots = [];
+            data.dots.forEach( ddot => {
+              this.dots.push(
+                  {x: parseFloat(ddot.coordinateX.replace(',','.')),
+                    y: parseFloat(ddot.coordinateY.replace(',','.')),
+                    r: parseFloat(ddot.radius.replace(',','.')),
+                    result: ddot.result,
+                    ctime: ddot.currentTime,
+                    ptime: parseFloat(ddot.processingTime.replace(',','.'))
+                  })
+            });
+          } else {
+          }
+        });
+  },
   data(){
     return {
-      dots: [
-        {x: 0,y: 1,r: 1,result: "HIT",ctime: 1,ptime: 2},
-        {x: 1,y: 0,r: 1,result: "MISS",ctime: 2,ptime: 2},
-        {x: 0,y: -1,r: 1,result: "HIT",ctime: 3,ptime: 2},
-        {x: -1,y: 0,r: 1,result: "MISS",ctime: 4,ptime: 2},
-      ],
+      dots: [],
       currentR: null,
-
     }
   },
   methods: {

@@ -4,7 +4,6 @@
       <Clock></Clock>
       <Calendar></Calendar>
       <div class="btns">
-        <MyButton class="btn" @click="toMain" >НА ГЛАВНУЮ</MyButton>
         <MyButton class="btn" @click="signIn" >АВТОРИЗАЦИЯ</MyButton>
         <MyButton class="btn" @click="signUp" >РЕГИСТРАЦИЯ</MyButton>
         <MyDialog v-model:show="dialogVisible">
